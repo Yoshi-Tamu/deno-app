@@ -1,5 +1,4 @@
 :root {
-  --bg: #050816;
   --card: rgba(12, 18, 40, 0.64);
   --card-strong: rgba(17, 25, 56, 0.88);
   --line: rgba(255, 255, 255, 0.14);
@@ -11,13 +10,9 @@
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -77,16 +72,20 @@ body {
 
 .card {
   border: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 120%),
-    var(--card);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 120%), var(--card);
   box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
 }
 
-.glass {
-  border-radius: 32px;
-  overflow: hidden;
+.glass,
+.particle-stage,
+.panel,
+.feature,
+.marquee {
+  border-radius: 28px;
 }
+
+.glass { overflow: hidden; border-radius: 32px; }
 
 .hero {
   position: relative;
@@ -98,9 +97,7 @@ body {
 .hero::after {
   content: "";
   position: absolute;
-  inset: auto;
   border-radius: 999px;
-  filter: blur(0);
   opacity: 0.9;
 }
 
@@ -149,42 +146,29 @@ body {
   line-height: 0.95;
   letter-spacing: 0.02em;
   text-wrap: balance;
-  text-shadow:
-    0 0 18px rgba(124, 247, 255, 0.24),
-    0 0 48px rgba(255, 139, 212, 0.16);
+  text-shadow: 0 0 18px rgba(124, 247, 255, 0.24), 0 0 48px rgba(255, 139, 212, 0.16);
 }
 
-.title span {
-  display: inline-block;
-  animation: pop 720ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
-}
+.title span { display: inline-block; animation: pop 720ms cubic-bezier(0.2, 0.9, 0.2, 1) both; }
 
 .lead,
 .panel p,
-.feature p {
-  color: var(--muted);
-  line-height: 1.9;
-  font-size: 1.02rem;
-}
+.feature p { color: var(--muted); line-height: 1.9; font-size: 1.02rem; }
 
-.lead {
-  max-width: 62ch;
-  margin: 22px 0 0;
-}
+.lead { max-width: 62ch; margin: 22px 0 0; }
 
-.cta-row {
+.cta-row,
+.control-panel,
+.status-row {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 28px;
 }
 
-.control-panel {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 28px;
-}
+.cta-row,
+.control-panel { margin-top: 28px; }
+
+.status-row { margin-top: 18px; }
 
 .button {
   display: inline-flex;
@@ -197,9 +181,7 @@ body {
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
-.button:hover {
-  transform: translateY(-2px) scale(1.01);
-}
+.button:hover { transform: translateY(-2px) scale(1.01); }
 
 .primary {
   color: #0a1024;
@@ -220,16 +202,7 @@ body {
 
 .button.is-active {
   transform: translateY(-2px);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.2),
-    0 16px 36px rgba(124, 247, 255, 0.18);
-}
-
-.status-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 18px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 16px 36px rgba(124, 247, 255, 0.18);
 }
 
 .status-pill {
@@ -243,9 +216,7 @@ body {
   color: var(--muted);
 }
 
-.status-pill strong {
-  color: var(--text);
-}
+.status-pill strong { color: var(--text); }
 
 .status-dot {
   width: 10px;
@@ -255,6 +226,8 @@ body {
   box-shadow: 0 0 18px var(--cyan);
 }
 
+.is-hidden { display: none; }
+
 .stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -262,12 +235,18 @@ body {
   margin-top: 34px;
 }
 
-.stat {
-  padding: 18px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.stat,
+.panel,
+.feature,
+.marquee,
+.particle-stage {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 120%), var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
 }
+
+.stat { padding: 18px; border-radius: 22px; }
 
 .stat strong {
   display: block;
@@ -275,15 +254,7 @@ body {
   margin-bottom: 6px;
 }
 
-.stat span {
-  color: var(--muted);
-}
-
-.panel,
-.feature,
-.marquee {
-  border-radius: 28px;
-}
+.stat span { color: var(--muted); }
 
 .panel {
   padding: 28px;
@@ -297,6 +268,16 @@ body {
   font-size: 1.5rem;
 }
 
+.particle-stage {
+  min-height: 220px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(124, 247, 255, 0.12), transparent 55%),
+    rgba(255, 255, 255, 0.04);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -304,10 +285,7 @@ body {
   margin-bottom: 24px;
 }
 
-.feature {
-  padding: 22px;
-  min-height: 180px;
-}
+.feature { padding: 22px; min-height: 180px; }
 
 .marquee {
   overflow: hidden;
@@ -333,21 +311,6 @@ body {
   color: var(--pink);
 }
 
-.cursor-glow {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(124, 247, 255, 0.22), transparent 65%);
-  filter: blur(12px);
-  mix-blend-mode: screen;
-  opacity: 0.5;
-}
-
 @keyframes drift {
   from { transform: translate3d(-1%, -1%, 0) scale(1); }
   to { transform: translate3d(1.5%, 1%, 0) scale(1.06); }
@@ -364,26 +327,13 @@ body {
 }
 
 @keyframes pop {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.92);
-    filter: blur(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
+  from { opacity: 0; transform: translateY(16px) scale(0.92); filter: blur(8px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
 @media (max-width: 900px) {
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .stats {
-    grid-template-columns: 1fr;
-  }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
@@ -398,18 +348,8 @@ body {
     border-radius: 24px;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .title {
-    font-size: clamp(2.4rem, 16vw, 4rem);
-  }
-
-  .control-panel,
-  .status-row {
-    gap: 10px;
-  }
+  .grid { grid-template-columns: 1fr; }
+  .title { font-size: clamp(2.4rem, 16vw, 4rem); }
 
   .control-btn {
     min-width: calc(50% - 5px);

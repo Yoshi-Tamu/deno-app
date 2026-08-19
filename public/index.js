@@ -1,15 +1,26 @@
 const response = await fetch("/welcome-message");
 const message = await response.text();
 
+const metricsResponse = await fetch("/site-metrics");
+const metrics = await metricsResponse.json();
+
 const title = document.querySelector("#welcomeMessage");
 const statusLabel = document.querySelector("[data-status-label]");
 const statusDot = document.querySelector("[data-status-dot]");
 const particleCountEl = document.querySelector("[data-particle-count]");
 const glowLevelEl = document.querySelector("[data-glow-level]");
 const controlButtons = document.querySelectorAll("[data-mode]");
+const densityPill = document.querySelector("[data-density-pill]");
+const densityValue = document.querySelector("[data-density-value]");
+const visitorCount = document.querySelector("[data-visitor-count]");
+const revealDensityButton = document.querySelector("[data-action='reveal-density']");
+const visitorButton = document.querySelector("[data-action='visitor-count']");
+const particleStage = document.querySelector(".particle-stage");
+
+visitorCount.textContent = String(metrics.visitors ?? 0);
+densityValue.textContent = String(metrics.density ?? 128);
 
 const words = message.split("");
-
 title.innerHTML = "";
 words.forEach((char, index) => {
   const span = document.createElement("span");
@@ -21,79 +32,24 @@ words.forEach((char, index) => {
 const particleCanvas = document.createElement("canvas");
 particleCanvas.className = "particle-canvas";
 particleCanvas.setAttribute("aria-hidden", "true");
-document.body.appendChild(particleCanvas);
+particleStage.appendChild(particleCanvas);
 
 const particleCtx = particleCanvas.getContext("2d");
 const particles = [];
 const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
 const modes = {
-  spark: {
-    name: "spark",
-    colors: ["#7cf7ff", "#ffffff", "#ffe58a"],
-    ambientRate: 0.995,
-    moveBurst: 8,
-    downBurst: 42,
-    clickBurst: 28,
-    scrollBurst: 18,
-    keyBurst: 44,
-    hoverBurst: 24,
-    initialBurst: 140,
-    intensity: 0.75,
-    glow: "high",
-    particleScale: 1,
-  },
-  nebula: {
-    name: "nebula",
-    colors: ["#ff8bd4", "#7cf7ff", "#b18cff", "#ffffff"],
-    ambientRate: 0.998,
-    moveBurst: 10,
-    downBurst: 52,
-    clickBurst: 36,
-    scrollBurst: 22,
-    keyBurst: 50,
-    hoverBurst: 28,
-    initialBurst: 180,
-    intensity: 0.95,
-    glow: "ultra",
-    particleScale: 1.15,
-  },
-  laser: {
-    name: "laser",
-    colors: ["#7cf7ff", "#00ffd5", "#ffffff", "#ff8bd4"],
-    ambientRate: 0.999,
-    moveBurst: 14,
-    downBurst: 70,
-    clickBurst: 48,
-    scrollBurst: 28,
-    keyBurst: 58,
-    hoverBurst: 36,
-    initialBurst: 220,
-    intensity: 1.15,
-    glow: "maximum",
-    particleScale: 1.35,
-  },
-  calm: {
-    name: "calm",
-    colors: ["#7cf7ff", "#ffffff", "#dbe8ff"],
-    ambientRate: 0.985,
-    moveBurst: 3,
-    downBurst: 18,
-    clickBurst: 12,
-    scrollBurst: 8,
-    keyBurst: 20,
-    hoverBurst: 10,
-    initialBurst: 70,
-    intensity: 0.45,
-    glow: "soft",
-    particleScale: 0.85,
-  },
+  spark: { name: "spark", colors: ["#7cf7ff", "#ffffff", "#ffe58a"], ambientRate: 0.995, moveBurst: 8, downBurst: 42, clickBurst: 28, scrollBurst: 18, keyBurst: 44, hoverBurst: 24, initialBurst: 140, intensity: 0.75, glow: "high", particleScale: 1 },
+  nebula: { name: "nebula", colors: ["#ff8bd4", "#7cf7ff", "#b18cff", "#ffffff"], ambientRate: 0.998, moveBurst: 10, downBurst: 52, clickBurst: 36, scrollBurst: 22, keyBurst: 50, hoverBurst: 28, initialBurst: 180, intensity: 0.95, glow: "ultra", particleScale: 1.15 },
+  laser: { name: "laser", colors: ["#7cf7ff", "#00ffd5", "#ffffff", "#ff8bd4"], ambientRate: 0.999, moveBurst: 14, downBurst: 70, clickBurst: 48, scrollBurst: 28, keyBurst: 58, hoverBurst: 36, initialBurst: 220, intensity: 1.15, glow: "maximum", particleScale: 1.35 },
+  calm: { name: "calm", colors: ["#7cf7ff", "#ffffff", "#dbe8ff"], ambientRate: 0.985, moveBurst: 3, downBurst: 18, clickBurst: 12, scrollBurst: 8, keyBurst: 20, hoverBurst: 10, initialBurst: 70, intensity: 0.45, glow: "soft", particleScale: 0.85 },
 };
 
 let currentMode = modes.spark;
 let dpr = Math.max(1, window.devicePixelRatio || 1);
 let width = 0;
 let height = 0;
+let densityVisible = false;
 
 function applyMode(modeName) {
   currentMode = modes[modeName] ?? modes.spark;
@@ -114,6 +70,11 @@ function applyMode(modeName) {
       button.classList.add("secondary");
     }
   });
+}
+
+function toggleDensity() {
+  densityVisible = !densityVisible;
+  densityPill.classList.toggle("is-hidden", !densityVisible);
 }
 
 function resizeCanvas() {
@@ -150,12 +111,7 @@ function burst(x, y, amount = 12, intensity = 1) {
 }
 
 function ambientSpray() {
-  burst(
-    Math.random() * width,
-    Math.random() * height,
-    3,
-    0.45,
-  );
+  burst(Math.random() * width, Math.random() * height, 3, 0.45);
 }
 
 function animate() {
@@ -185,14 +141,7 @@ function animate() {
     particleCtx.globalCompositeOperation = "lighter";
     particleCtx.globalAlpha = alpha;
 
-    const gradient = particleCtx.createRadialGradient(
-      particle.x,
-      particle.y,
-      0,
-      particle.x,
-      particle.y,
-      glowSize,
-    );
+    const gradient = particleCtx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, glowSize);
     gradient.addColorStop(0, particle.color);
     gradient.addColorStop(0.5, particle.color);
     gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
@@ -235,12 +184,7 @@ window.addEventListener("click", (event) => {
 });
 
 window.addEventListener("scroll", () => {
-  burst(
-    Math.random() * width,
-    60 + Math.random() * Math.max(80, height * 0.18),
-    currentMode.scrollBurst,
-    0.95,
-  );
+  burst(Math.random() * width, 60 + Math.random() * Math.max(80, height * 0.18), currentMode.scrollBurst, 0.95);
 });
 
 window.addEventListener("keydown", (event) => {
@@ -252,12 +196,7 @@ window.addEventListener("keydown", (event) => {
 document.querySelectorAll(".card, .button").forEach((element) => {
   element.addEventListener("mouseenter", () => {
     const rect = element.getBoundingClientRect();
-    burst(
-      rect.left + rect.width / 2,
-      rect.top + rect.height / 2,
-      currentMode.hoverBurst,
-      1,
-    );
+    burst(rect.left + rect.width / 2, rect.top + rect.height / 2, currentMode.hoverBurst, 1);
   });
 });
 
@@ -266,6 +205,16 @@ controlButtons.forEach((button) => {
     applyMode(button.dataset.mode);
     burst(pointer.x, pointer.y, currentMode.initialBurst / 3, 1.2);
   });
+});
+
+revealDensityButton.addEventListener("click", () => {
+  toggleDensity();
+  burst(pointer.x, pointer.y, 32, 1.1);
+});
+
+visitorButton.addEventListener("click", () => {
+  visitorCount.textContent = String(Number(visitorCount.textContent || 0) + 1);
+  burst(pointer.x, pointer.y, 28, 1.05);
 });
 
 resizeCanvas();

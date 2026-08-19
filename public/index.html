@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta
       name="description"
-      content="きらめきと粒子とネオンの強さを操作できる、発光テーマのランディングページ。"
+      content="粒子、きらめき、ネオンを操作できる発光テーマのランディングページ。"
     >
     <title>Starlight Bloom | Neon Playground</title>
     <link rel="icon" href="data:image/x-icon;,">
@@ -29,18 +29,12 @@
         </p>
 
         <div class="control-panel" aria-label="visual controls">
-          <button class="button primary control-btn" data-mode="spark">
-            Spark Mode
-          </button>
-          <button class="button secondary control-btn" data-mode="nebula">
-            Nebula Mode
-          </button>
-          <button class="button secondary control-btn" data-mode="laser">
-            Laser Mode
-          </button>
-          <button class="button secondary control-btn" data-mode="calm">
-            Calm Mode
-          </button>
+          <button class="button primary control-btn" data-mode="spark">Spark Mode</button>
+          <button class="button secondary control-btn" data-mode="nebula">Nebula Mode</button>
+          <button class="button secondary control-btn" data-mode="laser">Laser Mode</button>
+          <button class="button secondary control-btn" data-mode="calm">Calm Mode</button>
+          <button class="button secondary control-btn" data-action="reveal-density">Density 128</button>
+          <button class="button secondary control-btn" data-action="visitor-count">Visitor Count</button>
         </div>
 
         <div class="cta-row">
@@ -55,6 +49,8 @@
           </div>
           <div class="status-pill">Particles: <strong data-particle-count>0</strong></div>
           <div class="status-pill">Glow: <strong data-glow-level>high</strong></div>
+          <div class="status-pill is-hidden" data-density-pill>Density: <strong data-density-value>128</strong></div>
+          <div class="status-pill">Visitors: <strong data-visitor-count>0</strong></div>
         </div>
 
         <div class="stats">
@@ -72,6 +68,8 @@
           </article>
         </div>
       </section>
+
+      <section class="particle-stage card" aria-label="particle stage"></section>
 
       <section id="story" class="panel card">
         <h2>コンセプト</h2>
