@@ -1,15 +1,125 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <title>ようこそ、jigインターンへ！</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="きらめきと粒子とネオンの強さを操作できる、発光テーマのランディングページ。"
+    >
+    <title>Starlight Bloom | Neon Playground</title>
     <link rel="icon" href="data:image/x-icon;,">
     <link rel="stylesheet" href="./styles.css">
     <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <!-- サーバーから返ってきた文字を表示する場所 -->
-    <h1 id="welcomeMessage"></h1>
+    <div class="background-aurora"></div>
+    <div class="background-grid"></div>
+    <main class="shell">
+      <section class="hero card glass">
+        <div class="eyebrow">
+          <span class="spark"></span>
+          Neon Dream Interface
+        </div>
+        <h1 id="welcomeMessage" class="title"></h1>
+        <p class="lead">
+          光、粒子、反射、余韻。
+          その全部を盛り込んだ、少しやりすぎなくらい華やかなステージです。
+          ここではボタンを押すたびに、空気の色も、きらめきの密度も、ネオンの温度も変わります。
+        </p>
+
+        <div class="control-panel" aria-label="visual controls">
+          <button class="button primary control-btn" data-mode="spark">
+            Spark Mode
+          </button>
+          <button class="button secondary control-btn" data-mode="nebula">
+            Nebula Mode
+          </button>
+          <button class="button secondary control-btn" data-mode="laser">
+            Laser Mode
+          </button>
+          <button class="button secondary control-btn" data-mode="calm">
+            Calm Mode
+          </button>
+        </div>
+
+        <div class="cta-row">
+          <a class="button secondary" href="#story">世界観を見る</a>
+          <a class="button secondary" href="#gallery">きらめき一覧</a>
+        </div>
+
+        <div class="status-row">
+          <div class="status-pill">
+            <span class="status-dot" data-status-dot></span>
+            <span data-status-label>spark</span>
+          </div>
+          <div class="status-pill">Particles: <strong data-particle-count>0</strong></div>
+          <div class="status-pill">Glow: <strong data-glow-level>high</strong></div>
+        </div>
+
+        <div class="stats">
+          <article class="stat">
+            <strong>24/7</strong>
+            <span>発光モード</span>
+          </article>
+          <article class="stat">
+            <strong>128</strong>
+            <span>星屑の密度</span>
+          </article>
+          <article class="stat">
+            <strong>∞</strong>
+            <span>演出の余白</span>
+          </article>
+        </div>
+      </section>
+
+      <section id="story" class="panel card">
+        <h2>コンセプト</h2>
+        <p>
+          このサイトは、ただ表示するだけのページではありません。
+          クリックするたび、スクロールするたび、視線を動かすたびに
+          小さな粒が散って、雰囲気そのものが変化するように作っています。
+        </p>
+        <p>
+          追加したボタンは、単なる見た目の飾りではなく、
+          粒子の量、きらめきの強さ、ネオンの彩度、空気感の落ち着き方を切り替えるための
+          スイッチになっています。
+        </p>
+      </section>
+
+      <section id="gallery" class="grid">
+        <article class="card feature">
+          <h3>Glow</h3>
+          <p>画面全体をやわらかく包む発光。高輝度で、輪郭が少し溶けるくらいの強め設定。</p>
+        </article>
+        <article class="card feature">
+          <h3>Float</h3>
+          <p>カードや背景がふわっと浮くような、静かな立体感。視線が泳ぐたびに粒子が反応します。</p>
+        </article>
+        <article class="card feature">
+          <h3>Shimmer</h3>
+          <p>星屑のような輝きがちらつくモード。ちいさな操作でも、光がぱっと散るようにしています。</p>
+        </article>
+        <article class="card feature">
+          <h3>Story</h3>
+          <p>文章も増やして、読み物としても成立するように再構成。世界観がちゃんと喋る構成です。</p>
+        </article>
+      </section>
+
+      <section class="marquee card">
+        <div class="marquee-track">
+          <span>starlight</span>
+          <span>sparkle</span>
+          <span>dream</span>
+          <span>glow</span>
+          <span>shimmer</span>
+          <span>radiance</span>
+          <span>starlight</span>
+          <span>sparkle</span>
+          <span>dream</span>
+          <span>glow</span>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
