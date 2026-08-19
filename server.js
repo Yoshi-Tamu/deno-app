@@ -33,6 +33,16 @@ Deno.serve(async (req) => {
     return Response.json({ visitors: count, density: 128 });
   }
 
+  //今日やるとこ(api)
+    if (req.method === "POST" && pathname === "/auth") {
+    const body = await req.json();
+    if (body.password === "jigjp") {
+      return Response.json({ ok: true, message: "ログインできました" });
+    }
+    return Response.json({ ok: false, message: "パスワードが違います" });
+  }
+  //apiここまで
+
   return serveDir(req, {
     fsRoot: "public",
     urlRoot: "",
